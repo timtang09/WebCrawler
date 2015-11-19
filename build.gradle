@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'http://artifactory-internal.sugarops.com:8081/artifactory/repo'
+            credentials {
+                username artifactoryReaderUsername
+                password artifactoryReaderPassword
+            }
+        }
+    }
+
+    dependencies {
+        classpath "com.shopstyle.gradle:java-common:2.4.+"
+        classpath "com.shopstyle.gradle:publishing:2.4.+"
+        classpath "com.shopstyle.gradle:aws-deploy:2.4.+"
+
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'http://artifactory-internal.sugarops.com:8081/artifactory/repo'
+            credentials {
+                username artifactoryReaderUsername
+                password artifactoryReaderPassword
+            }
+        }
+    }
+
+    group = 'com.shopstyle.admin'
+}
+
+ext {
+    globalVersion = '1.0'
+
+}
+
+subprojects { subProject ->
+    apply plugin: 'com.shopstyle.gradle.java-common'
+    apply plugin: 'com.shopstyle.gradle.publishing'
+    apply plugin: 'com.shopstyle.gradle.aws-deploy'
+
+
+    version = globalVersion
+
+    sourceCompatibility = '1.7'
+    targetCompatibility = '1.7'
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+
+    eclipse {
+        classpath {
+            downloadSources = true
+            downloadJavadoc = false
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = '2.5'
+}
